@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -19,7 +20,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/users/update', [UserController::class, 'update']);
 
-    Route::post('/articles/get-paginated', [ArticleController::class, 'getPaginated']);
     Route::post('/articles/create', [ArticleController::class, 'create']);
     Route::post('/articles/destroy', [ArticleController::class, 'destroy']);
+    Route::post('/articles/get-paginated', [ArticleController::class, 'getPaginated']);
+
+    Route::post('/messages/create', [MessageController::class, 'create']);
+    Route::post('/messages/destroy', [MessageController::class, 'destroy']);
+    Route::post('/messages/get-paginated', [MessageController::class, 'getPaginated']);
 });

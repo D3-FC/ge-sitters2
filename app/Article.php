@@ -20,6 +20,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Article whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Article whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\App\Article onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Article whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Article withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Article withoutTrashed()
  */
 class Article extends Model
 {
