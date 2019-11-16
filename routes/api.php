@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
@@ -27,4 +28,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/messages/create', [MessageController::class, 'create']);
     Route::post('/messages/destroy', [MessageController::class, 'destroy']);
     Route::post('/messages/get-paginated', [MessageController::class, 'getPaginated']);
+
+    Route::post('/ads/create', [AdController::class, 'create']);
+    Route::post('/ads/destroy', [AdController::class, 'destroy']);
+    Route::post('/ads/get-paginated', [AdController::class, 'getPaginated']);
 });

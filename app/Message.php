@@ -25,6 +25,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereToId( $value )
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereUpdatedAt( $value )
  * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\User|null $from
+ * @property-read \App\User|null $to
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\App\Message onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Message whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Message withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Message withoutTrashed()
  */
 class Message extends Model
 {
