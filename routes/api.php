@@ -15,5 +15,5 @@ use App\Http\Controllers\UserController;
 Route::post('/users/register', [UserController::class, 'register']);
 
 Route::middleware('auth:api')->group(function () {
-
+    Route::post('/users/update', [UserController::class, 'update']);
 });

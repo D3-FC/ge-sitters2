@@ -17,7 +17,6 @@ class UserController extends Controller
     public function register(Request $request)
     {
         Validator::make($request->all(), [
-            'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
         ])->validate();
@@ -32,14 +31,38 @@ class UserController extends Controller
     }
 
 
-    private function createUser(Request $request): User
+    public function update(Request $request)
     {
-        $user           = new User();
-        $user->name     = $request->input('name');
-        $user->email    = $request->input('email');
-        $user->password = \Hash::make($request->input('password'));
+        $id   = $request->input('id');
+        $user = User::findOrFail($id);
+
+        $this->fillRequiredToUser($user, $request);
+        $user->first_name = $request->input('first_name');
+        $user->last_name  = $request->input('last_name');
+        $user->city       = $request->input('city');
+        $user->phone      = $request->input('phone');
+        $user->notify_sms      = $request->input('notify_sms');
+        $user->notify_email      = $request->input('notify_email');
+        $user->notify_cabinet      = $request->input('notify_cabinet');
         $user->save();
 
         return $user;
+    }
+
+
+    private function createUser(Request $request): User
+    {
+        $user = new User();
+        $this->fillRequiredToUser($user, $request);
+        $user->save();
+
+        return $user;
+    }
+
+
+    private function fillRequiredToUser(User $user, Request $request)
+    {
+        $user->email    = $request->input('email');
+        $user->password = \Hash::make($request->input('password'));
     }
 }

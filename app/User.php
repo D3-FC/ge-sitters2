@@ -5,13 +5,12 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Laravel\Passport\HasApiTokens;
 
 /**
  * App\User
  *
  * @property int $id
- * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
@@ -32,10 +31,24 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $phone
+ * @property string $city
+ * @property int $notify_sms
+ * @property int $notify_email
+ * @property int $notify_cabinet
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereNotifyCabinet($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereNotifyEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereNotifySms($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePhone($value)
  */
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
