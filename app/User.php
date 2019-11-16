@@ -45,6 +45,10 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereNotifyEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereNotifySms($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePhone($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property-read int|null $clients_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
+ * @property-read int|null $tokens_count
  */
 class User extends Authenticatable
 {
