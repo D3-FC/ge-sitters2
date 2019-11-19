@@ -8,6 +8,7 @@ import { createExpressServer } from 'routing-controllers'
 import theDebugger from 'debug'
 import { UserController } from './Controllers/User/UserController'
 import { HomeController } from './Controllers/HomeController'
+import { createConnection } from 'typeorm'
 
 function normalizePort(val: any) {
   var port = parseInt(val, 10);
@@ -57,10 +58,10 @@ function onError(error:any) {
 
 const debug = theDebugger('ge-sitters:api')
 const port = normalizePort(process.env.PORT || '3000');
+console.log('__dirname', __dirname)
 const app = createExpressServer({
   controllers: [
-    UserController,
-    HomeController,
+    __dirname + "/Controllers/**/*.ts"
   ]
 })
 
@@ -74,8 +75,21 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(Handler.handle)
 
+async function main () {
+  await createConnection({
+    type: "mysql",
+    host: "localhost",
+    port: 3306,
+    username: "root",
+    password: "",
+    database: "ge-sitters-node",
+    entities: [
+      __dirname + "/../common/Entities/**/*.ts"
+    ],
+    synchronize: true,
+    logging: false
+  })
 
-function main () {
   app.listen(port, ()=>{
     console.log(`Server is running on: http://localhost:${port}/`)
   })
