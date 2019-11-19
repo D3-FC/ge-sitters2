@@ -23,7 +23,9 @@
     "mysql": "^2.17.1",
     "routing-controllers": "^0.8.0",
     "tslib": "^1.10.0",
-    "typeorm": "^0.2.20"
+    "typedi": "^0.8.0",
+    "typeorm": "^0.2.20",
+    "typeorm-typedi-extensions": "^0.2.3"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
