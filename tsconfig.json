@@ -19,7 +19,8 @@
   "include": [
     "src/server/**/*.ts",
     "src/client/**/*.ts",
-    "src/common/**/*.ts"
+    "src/common/**/*.ts",
+    "bin/**/*.ts"
   ],
   "exclude": [
     "node_modules"
