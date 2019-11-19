@@ -1,19 +1,12 @@
 import 'reflect-metadata'
 
-import express, { Express } from 'express'
+import express from 'express'
 import logger from 'morgan'
 import path from 'path'
 import Handler from './Exceptions/Handler'
 import { createExpressServer, useContainer as routerUseContainer } from 'routing-controllers'
-import theDebugger from 'debug'
-import { UserController } from './Controllers/User/UserController'
-import { HomeController } from './Controllers/HomeController'
 import { createConnection, useContainer as ormUseContainer } from 'typeorm'
 import { Container } from 'typedi'
-
-// its important to set container before any operation you do with routing-controllers,
-// including importing controllers
-
 
 function normalizePort (val: any) {
   var port = parseInt(val, 10)
@@ -31,9 +24,6 @@ function normalizePort (val: any) {
   return false
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
 function onError (error: any) {
 
   if (error.syscall !== 'listen') {
@@ -58,12 +48,6 @@ function onError (error: any) {
       throw error
   }
 }
-
-/**
- * Event listener for HTTP server "listening" event.
- */
-
-const debug = theDebugger('ge-sitters:api')
 const port = normalizePort(process.env.PORT || '3000')
 console.log('__dirname', __dirname)
 const app = createExpressServer({
@@ -73,7 +57,6 @@ const app = createExpressServer({
 })
 routerUseContainer(Container)
 ormUseContainer(Container)
-
 
 app.on('error', onError)
 
@@ -95,7 +78,7 @@ async function main () {
       __dirname + '/../common/Entities/**/*.ts'
     ],
     synchronize: true,
-    logging: false
+    logging: false,
   })
 
   app.listen(port, () => {

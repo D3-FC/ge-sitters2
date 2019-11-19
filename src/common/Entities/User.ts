@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity('users')
 export class User {
@@ -7,21 +7,38 @@ export class User {
   id!: number
 
   @Column()
-  firstName: string = ''
-
-  @Column()
-  lastName: string = ''
+  email: string = ''
 
   @Column()
   phone: string = ''
 
   @Column()
-  email: string = ''
-
-  @Column()
   password: string = ''
 
-  constructor (data: Partial<User> = {}) {
-    Object.assign(this, data)
-  }
+  @Column()
+  city: string = ''
+
+  @Column()
+  first_name: string = ''
+
+  @Column()
+  last_name: string = ''
+
+  @Column()
+  notify_sms: boolean = false
+
+  @Column()
+  notify_email: boolean = false
+
+  @Column()
+  notify_cabinet: boolean = false
+
+  @Column()
+  remember_token: string = ''
+
+  @CreateDateColumn({ type: "timestamp" })
+  created_at!: string
+
+  @UpdateDateColumn({ type: "timestamp" })
+  updated_at!: string
 }
