@@ -1,88 +1,30 @@
 import 'reflect-metadata'
-
-import express from 'express'
-import logger from 'morgan'
-import path from 'path'
-import Handler from './Exceptions/Handler'
-import { createExpressServer, useContainer as routerUseContainer } from 'routing-controllers'
-import { createConnection, useContainer as ormUseContainer } from 'typeorm'
+import { createExpressServer } from 'routing-controllers'
+import { AppServiceProvider } from './Providers/AppServiceProvider'
+import { EventServiceProvider } from './Providers/EventServiceProvider'
 import { Container } from 'typedi'
+import MiddlewareProvider from './Providers/MiddlewareProvider'
+import { Env } from './Utility/Env'
+import env from 'dotenv'
 
-function normalizePort (val: any) {
-  var port = parseInt(val, 10)
+env.config()
 
-  if (isNaN(port)) {
-    // named pipe
-    return val
-  }
-
-  if (port >= 0) {
-    // port number
-    return port
-  }
-
-  return false
-}
-
-function onError (error: any) {
-
-  if (error.syscall !== 'listen') {
-    throw error
-  }
-
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port
-
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges')
-      process.exit(1)
-      break
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use')
-      process.exit(1)
-      break
-    default:
-      throw error
-  }
-}
-const port = normalizePort(process.env.PORT || '3000')
-console.log('__dirname', __dirname)
 const app = createExpressServer({
   controllers: [
     __dirname + '/Controllers/**/*.ts'
   ]
 })
-routerUseContainer(Container)
-ormUseContainer(Container)
-
-app.on('error', onError)
-
-// --=== MIDDLEWARES ===--
-app.use(logger('dev'))
-app.use(express.json())
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(Handler.handle)
 
 async function main () {
-  await createConnection({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '',
-    database: 'ge-sitters-node',
-    entities: [
-      __dirname + '/../common/Entities/**/*.ts'
-    ],
-    synchronize: true,
-    logging: false,
-  })
+  const env = Container.get(Env)
+  const pipe = env.getPipe()
 
-  app.listen(port, () => {
-    console.log(`Server is running on: http://localhost:${port}/`)
+  Container.get(EventServiceProvider).register(app, Container)
+  Container.get(MiddlewareProvider).register(app, Container)
+  Container.get(AppServiceProvider).register(app, Container)
+
+  app.listen(pipe, 'localhost', () => {
+    console.log(`Server is running on: http://localhost:${pipe}/`)
   })
 }
 

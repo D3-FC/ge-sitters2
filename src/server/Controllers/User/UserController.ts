@@ -1,4 +1,4 @@
-import { Body, Controller, Get, JsonController } from 'routing-controllers'
+import { Body, Get, JsonController } from 'routing-controllers'
 import UserService from '../../Services/UserService'
 import { Inject } from 'typedi'
 
@@ -14,6 +14,6 @@ export class UserController {
 
   @Get('/')
   getAll (@Body() body: UserRequest) {
-    return body.id
+    return this.uS.paginate()
   }
 }
