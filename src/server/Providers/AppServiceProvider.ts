@@ -1,30 +1,32 @@
 import { Container, Inject, Service } from 'typedi'
-import { useContainer as routerUseContainer } from 'routing-controllers'
 import { createConnection, useContainer as ormUseContainer } from 'typeorm'
 import { Express } from 'express'
 import { Env } from '../Utility/Env'
+import { Provider } from './Provider'
 
 @Service()
-export class AppServiceProvider {
+export class AppServiceProvider implements Provider {
   @Inject()
   env!: Env
 
-  register (app: Express, container: Container) {
-    routerUseContainer(Container)
+  async boot (app: Express) {
     ormUseContainer(Container)
 
+    this.setUpDB()
+  }
+
+  private async setUpDB () {
     const config = this.env.config
     const db: any = config.db
-    createConnection({
+
+    await createConnection({
       type: db.type,
       host: db.host,
       port: db.port,
       username: db.username,
       password: db.password,
       database: db.database,
-      entities: [
-        `${__dirname}/../..${config.entities}`
-      ],
+      entities: config.entities,
       synchronize: db.synchronize,
       logging: db.logging,
     })

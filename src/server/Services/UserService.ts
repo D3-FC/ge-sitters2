@@ -13,4 +13,8 @@ export default class UserService {
   paginate(){
     return this.c.manager.find(User);
   }
+
+  getOne(id: number){
+    return this.c.manager.findOneOrFail(User, id);
+  }
 }

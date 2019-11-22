@@ -1,12 +1,14 @@
-import { Body, Get, JsonController } from 'routing-controllers'
+import { Authorized, Body, CurrentUser, Get, JsonController, Req, UnauthorizedError } from 'routing-controllers'
 import UserService from '../../Services/UserService'
 import { Inject } from 'typedi'
+import passport from 'passport'
+import { User } from '../../../common/Entities/User'
 
 class UserRequest {
   id!: number
 }
 
-@JsonController('/users')
+@JsonController('/api/users')
 export class UserController {
 
   @Inject()
@@ -14,6 +16,13 @@ export class UserController {
 
   @Get('/')
   getAll (@Body() body: UserRequest) {
+
     return this.uS.paginate()
+  }
+
+  @Authorized()
+  @Get('/me')
+  getMe (@CurrentUser() user: User) {
+    return user
   }
 }

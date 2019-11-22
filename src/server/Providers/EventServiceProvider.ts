@@ -1,20 +1,25 @@
 import { Express } from 'express'
 import { Container, Inject, Service } from 'typedi'
 import { Env } from '../Utility/Env'
+import { Provider } from './Provider'
 
 @Service()
-export class EventServiceProvider {
+export class EventServiceProvider implements Provider {
   @Inject()
   env!: Env
 
-  onError (error: any) {
+  async boot (app: Express) {
+    app.on('error', this.onError)
+  }
+
+  async onError (error: any) {
     if (error.syscall !== 'listen') {
       throw error
     }
 
     const port = this.env.getPipe()
 
-    var bind = typeof port === 'string'
+    const bind = typeof port === 'string'
       ? 'Pipe ' + port
       : 'Port ' + port
 
@@ -33,7 +38,4 @@ export class EventServiceProvider {
     }
   }
 
-  register (app: Express, container: Container) {
-    app.on('error', this.onError)
-  }
 }
